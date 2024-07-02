@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.azure.com/tls-cert-keyvault-uri: https://saas-snd-dev-vault-eus.vault.azure.net/certificates/neolicenseai/1a55b10cceaf4343adfca9ad9ed7c13b
+  name: pgadmin 
+  namespace: services
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  rules:
+  - host: pgadmin-dev.neolicense.ai
+    http:
+      paths:
+      - backend:
+          service:
+            name: pgadmin
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - helloworld.neolicense.ai
+    secretName: keyvault-neolicenseai

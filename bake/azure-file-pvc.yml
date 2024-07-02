@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: akc-bake-files 
+  namespace: bake
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: akc-bake-files
+  resources:
+    requests:
+      storage: 5Ti 
+
