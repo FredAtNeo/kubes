@@ -18,7 +18,7 @@ spec:
           image: redis:7.2.5-bookworm
           env:
             - name: REDIS_PASSWORD
-              value: "REDACTED"
+              value: 
           resources:
             requests:
               cpu: 100m

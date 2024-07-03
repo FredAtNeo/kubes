@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-backend
+  namespace: bake
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-backend
+  template:
+    metadata:
+      labels:
+        app: web-backend
+    spec:
+      securityContext:
+        fsGroup: 33
+      containers:
+      - name: reprocess-queue
+        image: saassvctstacr.azurecr.io/bake:dev
+        command: ["python"]
+        args: ["manage.py", "djangohuey", "--queue", "reprocess", "-w", "1"]
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 33
+          runAsGroup: 33
+        imagePullPolicy: Always # forces image repull on scale
+        envFrom:
+          - configMapRef:
+             name: web-config
+        volumeMounts:
+        - mountPath: "/media"
+          name: media 
+      - name: default-queue
+        image: saassvctstacr.azurecr.io/bake:dev
+        command: ["python"]
+        args: ["manage.py", "djangohuey", "--queue", "default", "-w", "1"]
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 33
+          runAsGroup: 33
+        imagePullPolicy: Always # forces image repull on scale
+        envFrom:
+          - configMapRef:
+             name: web-config
+        volumeMounts:
+        - mountPath: "/media"
+          name: media 
+      - name: background-queue
+        image: saassvctstacr.azurecr.io/bake:dev
+        command: ["python"]
+        args: ["manage.py", "djangohuey", "--queue", "background", "-w", "1"]
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 33
+          runAsGroup: 33
+        imagePullPolicy: Always # forces image repull on scale
+        envFrom:
+          - configMapRef:
+             name: web-config
+        volumeMounts:
+        - mountPath: "/media"
+          name: media 
+      - name: web-backend
+        image: saassvctstacr.azurecr.io/bake:dev
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 33
+          runAsGroup: 33
+        ports:
+          - containerPort: 8000
+        imagePullPolicy: Always # forces image repull on scale
+          # This isn't working because of a domain name issue. Research and fix
+          #        livenessProbe:
+          #          httpGet:
+          #            path: /ht
+          #            port: 8000
+          #          initialDelaySeconds: 30
+          #          periodSeconds: 5
+          #        readinessProbe:
+          #          httpGet:
+          #            path: /ht
+          #            port: 8000
+          #          initialDelaySeconds: 15
+          #          periodSeconds: 3
+        envFrom:
+          - configMapRef:
+             name: web-config
+        volumeMounts:
+        - mountPath: "/media"
+          name: media 
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: akc-bake-files 
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - web-backend
+              topologyKey: "kubernetes.io/hostname"
+

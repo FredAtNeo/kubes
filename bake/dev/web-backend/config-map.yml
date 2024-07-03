@@ -7,26 +7,26 @@ metadata:
     app: bake-web-config 
 data:
   AZURE_FORM_REC_ENDPOINT: "https://saas-qtrct-pdn-fr-eus.cognitiveservices.azure.com/"
-  AZURE_FORM_REC_KEY: "REDACTED"
-  AZURE_OPENAI_API_KEY: "REDACTED"
+  AZURE_FORM_REC_KEY: 
+  AZURE_OPENAI_API_KEY: 
   AZURE_OPENAI_API_VERSION: "2024-02-15-preview"
   AZURE_OPENAI_DEPLOYMENT: "nsnb-ai-gpt4-eus"
   AZURE_OPENAI_ENDPOINT: "https://nsnb-saas-openai-prd-eus.openai.azure.com/"
   CLIENT_URL: "https://bake-dev.rickybobbys.org"
-  CSD_LOADER_PW: "REDACTED"
+  CSD_LOADER_PW: 
   CSD_LOADER_USER: "csd_loader"
   DB_ENGINE: "django_tenants.postgresql_backend"
   DB_PORT: "5432"
   DJANGO_DATABASE_NAME: "bake_dev"
-  DJANGO_DATABASE_PASSWORD: "REDACTED"
+  DJANGO_DATABASE_PASSWORD: 
   DJANGO_DATABASE_SERVER: "saas-snb-aksdb-tst-eus.postgres.database.azure.com"
   DJANGO_DATABASE_USER: "postgres"
   DJANGO_DEBUG: "True"
   DJANGO_MEDIA_ROOT: "/media"
   NEW_RELIC_CONFIG_FILE: "newrelic.ini"
   NEW_RELIC_ENVIRONMENT: "aks-development"
-  NEW_RELIC_LICENSE_KEY: "REDACTED"
+  NEW_RELIC_LICENSE_KEY: 
   REDIS_HOST: "redis"
-  REDIS_PASSWORD: "REDACTED"
+  REDIS_PASSWORD: 
   REDIS_PORT: "6379"
   REDIS_USER: "default"

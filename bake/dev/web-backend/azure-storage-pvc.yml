@@ -5,9 +5,9 @@ metadata:
   namespace: bake
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: akc-bake-files
+    - ReadWriteOnce
+  storageClassName: managed-csi
   resources:
     requests:
-      storage: 5Ti 
+      storage: 32Gi 
 
